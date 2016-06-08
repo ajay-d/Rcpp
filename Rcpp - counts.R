@@ -3,14 +3,15 @@ library(dplyr)
 library(tidyr)
 library(microbenchmark)
 
-n <- 1e6
+n <- 1e4
 
 df <- data_frame(Reported = rnorm(n, 1500, 100),
                  Closed = Reported+rnorm(n, 1500, 100))
 
+sourceCpp("cpp/countday_11.cpp")
+sourceCpp("cpp/countday_std.cpp")
 
-
-count <- df %>%
+count.r <- df %>%
   mutate(start = ceiling(Reported),
          end = floor(Closed),
          claim = row_number()) %>%
@@ -23,8 +24,13 @@ count <- df %>%
   group_by(days) %>%
   summarise(count=sum(count))
 
-sourceCpp("countday.cpp")
+count.rcpp <- countdays(df)
+count.rcpp_m <- countdays_m(as.matrix(df))
+count.rcpp_std <- countdays_std(df)
 
-t1 <- countdays_m(as.matrix(df)) 
-t2 <- countdays(df)
-identical(t1,t2)
+identical(count.rcpp,count.rcpp_m)
+identical(count.rcpp %>% arrange(days),count.rcpp_std)
+
+microbenchmark(countdays(df), 
+               countdays_m(as.matrix(df)),
+               countdays_std(df))
