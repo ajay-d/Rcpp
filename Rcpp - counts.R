@@ -10,6 +10,8 @@ df <- data_frame(Reported = rnorm(n, 1500, 100),
 
 sourceCpp("cpp/countday_11.cpp")
 sourceCpp("cpp/countday_std.cpp")
+sourceCpp("cpp/countday_std_noSTLimport.cpp")
+sourceCpp("cpp/countday_11_orderedmap.cpp")
 
 count.r <- df %>%
   mutate(start = ceiling(Reported),
@@ -34,3 +36,10 @@ identical(count.rcpp %>% arrange(days),count.rcpp_std)
 microbenchmark(countdays(df), 
                countdays_m(as.matrix(df)),
                countdays_std(df))
+
+microbenchmark(countdays_std(df),
+               countdays_std_noimport(df))
+
+microbenchmark(countdays_std_noimport(df),
+               countdays_11ordered(df))
+
