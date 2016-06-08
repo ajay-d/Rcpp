@@ -3,7 +3,7 @@ library(dplyr)
 library(tidyr)
 library(microbenchmark)
 
-n <- 1e5
+n <- 1e6
 
 df <- data_frame(Reported = rnorm(n, 1500, 100),
                  Closed = Reported+rnorm(n, 1500, 100))
