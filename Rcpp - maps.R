@@ -3,7 +3,14 @@ library(magrittr)
 library(devtools)
 
 find_rtools()
+session_info()
+
 system('g++ -v')
+system('make -v')
+
+system('where make')
+system("java -version")
+Sys.getenv('PATH')
 
 code <- '
 #include <Rcpp.h>

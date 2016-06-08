@@ -8,6 +8,8 @@ n <- 1e5
 df <- data_frame(Reported = rnorm(n, 1500, 100),
                  Closed = Reported+rnorm(n, 1500, 100))
 
+
+
 count <- df %>%
   mutate(start = ceiling(Reported),
          end = floor(Closed),
