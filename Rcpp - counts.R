@@ -43,3 +43,19 @@ microbenchmark(countdays_std(df),
 microbenchmark(countdays_std_noimport(df),
                countdays_11ordered(df))
 
+n <- 1e4
+
+df_grouped <- data_frame(Reported = rnorm(n, 1500, 100),
+                         Closed = Reported+rnorm(n, 1500, 100)) %>%
+  rowwise() %>%
+  mutate(group = c('a','b','c')[floor(runif(1,1,4))])
+
+df_grouped %>% count(group)
+
+sourceCpp("cpp/countday_grouped.cpp")
+t <- countdays_grouped(df_grouped)
+
+
+
+
+
