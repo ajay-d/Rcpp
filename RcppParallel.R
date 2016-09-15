@@ -2,6 +2,7 @@ rm(list=ls(all=TRUE))
 
 library(dplyr)
 library(tidyr)
+library(Rcpp)
 library(RcppParallel)
 library(microbenchmark)
 
